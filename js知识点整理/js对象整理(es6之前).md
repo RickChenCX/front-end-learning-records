@@ -60,6 +60,85 @@
         obj["name"] = "mars";
     ```
     > "."和[]使用上是有差别的，点运算符后面的标识符是静态的，是写死在程序里的，而方括号内的表达式必须返回字符串，字符串值是动态的，可以在运行时更改。
+* __删除属性__
+    delete运算符，delete运算符只能删除自有属性，不能删除继承属性（要删除继承属性必须从定义这个属性的原型对象上删除它，而且这会影响到所有继承自这个原型的对象）。
+    ``` javascript
+        // delete非严格模式下删除全局对象的可配置属性
+        this.x = 1; 
+        delete x; // 将它删除
 
-* __继承__
+        // 严格模式下
+        delete x; // 在严格模式下语法报错
+        delete this.x // 正常
+
+    ```
+    > delete 表达式删除成功时，或没有任何副作用时（比如删除不存在的属性），它返回true，如果delete后不是一个属性访问表达式，delete同样返回true。
+    ``` javascript
+        o = {x:1};
+        delete o.x; //删除x,返回true
+        delete o.x; // 什么也没做，x已经删除，返回true
+        delete o.toString; // 什么也没做，toString是继承来的，返回true
+        delete 1; // 无意义，返回true
+    ```
+    > delete不能删除那些可配置性为false的属性
+
+* __检测属性__
+    1. in运算符
+    2. hasOwnProperty()
+    3. propertyIsEnumerable()
+    ``` javascript
+        // in运算符
+        let o = { x:1 };
+        "x" in o; // true
+        "y" in o  // false
+        "toString" in o // true ,toString是继承来的
+
+        // hasOwnProperty()检测自有属性，继承属性返回false
+        o.hasOwnProperty("x"); // true
+        o.hasOwnProperty("y"); // false
+        o.hasOwnProperty("toString"); // false
+
+        // propertyIsEnumerable() 检测是否是自有属性，且可枚举
+        // 继承来的属性返回false
+        o.propertyIsEnumerable("x") // true , 自有，且可枚举
+        Object.prototype.propertyIsEnumerable("toString") // false,不可枚举
+
+        // "!==" 判断属性是否是undefined
+        o.x !== undefined; // true 
+        o.y !== undefined; // false
+        o.toString !== undefined // true
+    ```
+    > in运算符可以区分不存在的属性和存在但是值为undefined的属性，而"!=="检测值为undefined的属性时，返回false。
+
+* __枚举属性__
+    1. for/in
+    2. Object.keys():返回对象中可枚举的自有属性的名称的数组
+    3. Object.getOwnPropertyNames():返回对象的所有自有属性的名称
+
+* __getter/setter__
+    存取器属性。
+    属性同时具有setter/getter,是一个可读/写属性
+    属性只有getter，是一个只读属性
+    属性只有setter,是一个只写属性，读取只写属性，总是返回null
+    1. getter:查询存取器属性的值
+    2. setter:设置存取器属性的值
+    ``` javascript
+        let o = {
+            x:1,
+            y:2,
+            get r() {
+                return x+y;
+            },
+            set r(newVal) {
+                this.x += newVal;
+                this.y += newVal;
+            }
+        }
+    ```
+
+* __属性的特性__
+    1. 数据属性：值（value），可写性（writable），可枚举性（enumerable)，可配置性（configurable）
+    2. 存取器属性：读取（get），写入（set），可枚举性（enumerable)，可配置性（configurable）
     
+* __继承__
+
