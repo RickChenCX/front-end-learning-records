@@ -139,6 +139,68 @@
 * __属性的特性__
     1. 数据属性：值（value），可写性（writable），可枚举性（enumerable)，可配置性（configurable）
     2. 存取器属性：读取（get），写入（set），可枚举性（enumerable)，可配置性（configurable）
+
+    调用 **Object.getOwnPropertyDescriptor()** 可以获得某个对象特定属性的属性描述符。
+    ``` javascript
+        Object.getOwnPropertyDescriptor({x:1}, "x");
+        // {value:1, writable:true, enumerable:true, configurable:true}
+        // 对于继承属性和不存在的属性，返回undefined
+    ```
+    **Object.defineProperty()** 设置属性的特性，或者让新建的属性具有某种特性
+    ``` javascript
+        let o = {};
+        // 添加了一个不可枚举的，值为1的属性
+        Object.defineProperty(o, "x", {
+            value:1,
+            writable:true, 
+            enumerable:false, 
+            configurable:true
+        })
+        // 数据属性改为存取器属性
+        Object.defineProperty(o, "x", {
+            get: function() { return 0; };
+        })
+        o.x // 0
+    ```
+    > 这个方法修改已有属性和自有属性，不能修改继承属性
+
+    **Object.defineProperties()**
+    同时修改多个属性或创建属性
+    第一个参数是要修改的对象，第二个参数是包含要修改和新建属性的名称，属性描述符的映射表。
+    ``` javascript
+        //给一个空对象添加两个数据属性，和一个存取起属性
+        let p = Object.defineProperties({}, {
+            x:{
+                value:1,
+                writable:true, 
+                enumerable:true, 
+                configurable:true
+            },
+            y:{
+                value:1,
+                writable:true, 
+                enumerable:true, 
+                configurable:true
+            },
+            z:{
+                get:function() {
+                    return this.x + this.y;
+                },
+                enumerable:true, 
+                configurable:true
+            },
+        })
+    ```
+    > Object.defineProperty()和 Object.defineProperties()使用规则：
+       1. 如果对象不可拓展，只能修改已有的自有属性，不能新创建属性。
+       2. 如果对象不可配置，则不能修改他的可配置型和可枚举性。
+       3. 如果存取器属性不可配置，则不能修改setter和getter，也不能将它转为数据属性。
+       4. 如果数据属性不可配置，则不能转为存取器属性。
+       5. 如果数据属性不可配置，则不能将它的可写性从false修改为true，但是可以从true修改为false.
+       6. 如果数据属性是不可写且不可配置的，则不能修改它的值，可配置不可写的属性的值是可以修改的。
     
-* __继承__
+##### 对象的三个属性：原型(prototype),类(class)和可拓展性(extensible attribute)
+
+* __原型属性__
+    
 
