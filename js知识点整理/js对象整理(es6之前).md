@@ -202,5 +202,37 @@
 ##### 对象的三个属性：原型(prototype),类(class)和可拓展性(extensible attribute)
 
 * __原型属性__
-    
+    查询一个对象的原型，**Object.getPrototypeOf()**
+    **isPrototypeOf()** 检测一个对象是否在对象的原型链中，或是否是一个对象的原型。
+* __类属性__
+    Object.prototype.toString.call(o).slice(8, -1)返回对象的类。
 
+* __可拓展性__
+    表示是否可以给对象添加新属性。
+    **Object.esExtensible()** 判断对象是否可拓展。
+    **Object.preventExtensions()** 将对象改为不可拓展的
+    > 注意，将对象改为不可拓展的之后，不可在改为可拓展的。只影响对象本身的可拓展性，如在对象的原型上新增属性，改为不可拓展的对象也能继承新的属性。
+
+    **Object.seal()** 和**Object.preventExtensions()** 类似，还可以将对象的所有自有属性设置为不可配置的，但是对于已有的可写的属性还是能够修改。
+    > 对与封闭的（sealed）对象，是不可以解封的，可以用Object.isSealed()来检查对象是否封闭。
+
+    **Object.freeze()** 更严格的锁定对象，“冻结”。将对象的所有属性设置为不可配置，将对象设置为不可拓展，所有的数据属性设置为只读。
+    > 如果对象的存取起属性具有setter方法，存储器属性不受影响，使用Object.isFrozen()判断对象是否冻结。
+
+
+__序列化对象__
+    指将对象的状态转换为字符串，或将字符串状态还原为对象。
+    **JSON.stringify()** 序列化对象，对象的可枚举属性。
+    **JSON.parse()** 还原对象
+
+
+#### 对象方法
+* __toString()__
+    返回一个表示调用这个方法的对象值的字符串。
+
+* __toLocaleString()__
+    返回一个表示找个对象的本地字符串。
+* __toJSON()__
+    对于需要序列化的对象来说，JSON.stringify()方法会调用toJSON()方法。
+* __valueOf()__
+    和toString()方法类似，将对象转为某种原始值而不是字符串的时候会用到它，尤其是转换为数字的时候。
