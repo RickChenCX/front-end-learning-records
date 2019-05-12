@@ -55,5 +55,6 @@
     3. 选择 Browse repositories…，选择 flutter 插件并点击 install。
     4. 重启Android Studio后插件生效。
 
-    
-    
+    ----
+    **ios toolchain** 的问题，根据提示在终端执行相对应的命令，安装即可。
+    ![flutter_3.png](../images/flutter_3.png)
